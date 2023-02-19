@@ -1,0 +1,325 @@
+.input-form-cont, .find-code-cont {
+    width: 98%;
+    margin: 32px auto;
+    background-color: white;
+    box-shadow: rgba(17, 17, 26, 0.055) 0px 0px 16px;
+    transition: 0.5s ease-in-out;
+    padding: 24px 0;
+}
+
+.input-form-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.row-input {
+    margin: 12px;
+    border: #a3a3a3 solid 1px;
+    display: flex;
+    border-radius: 12px;
+}
+
+.row-input input,
+.row-input select {
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    padding: 12px 24px;
+    font-family: 'Mulish', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.row-input input:focus,
+.row-input select:focus {
+    outline: none;
+}
+
+#id, #find-id {
+    width: 180px;
+}
+
+#list-code-length{
+    width: 260px !important;
+}
+
+.download-btn-cont {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#download-btn {
+    margin: 0 12px;
+    padding: 12px 24px;
+    background-color: rgb(85, 227, 252);
+    border: none;
+    border-radius: 16px;
+    font-family: 'Mulish', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+#download-btn:hover {
+    cursor: pointer;
+    background-color: rgb(65, 206, 231);
+}
+
+#download-btn:active {
+    background-color: rgb(55, 189, 212);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+}
+
+#download-btn i {
+    margin-right: 12px;
+}
+
+.confirm-code-btn-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-find-code-table {
+    display: flex;
+    align-items: center;
+}
+
+.mark {
+    background-color: #04a9f5;
+    height: 25px;
+    width: 5px;
+    margin-right: 15px;
+}
+
+.title-text-table {
+    font-weight: 600;
+}
+
+.search-icon {
+    background-color: #dfdfdf;
+    width: 70px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin: 6px 12px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.search-icon i {
+    font-size: 20px;
+}
+
+.search-icon:hover {
+    cursor: pointer;
+    background-color: #c4c4c4;
+}
+
+.search-icon:active {
+    background-color: #b4b4b4;
+}
+
+.note-find-table {
+    margin: 12px 24px;
+    text-align: end;
+    font-style: italic;
+    color: #757575;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.item-find-cont {
+    border-top: 1px solid #e0e0e0;
+}
+
+.row-title-find {
+    display: flex;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    border-bottom: 1px solid #e0e0e0;
+    padding-right: 18px;
+    background-color: #b6e8ff2d;
+}
+
+.row-item-find {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.td-item-title-find {
+    width: calc(100%/9);
+    text-align: center;
+}
+
+.td-item-find {
+    font-size: 14px;
+    color: rgb(78, 78, 78);
+}
+
+.item-id, .item-site, .item-code, .item-point {
+    width: 7%;
+}
+.item-user-used, .item-used-time, .item-exp-code {
+    width: 10%;
+}
+
+.item-ip, .item-fp {
+    width: 21%;
+}
+
+.row-item-find div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+}
+
+#body-find-code {
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+#edit-btn {
+    background-color: #ff004c;
+    color: white;
+}
+
+#edit-btn:hover {
+    background-color: #dd0d4b;
+}
+
+#edit-btn:active {
+    background-color: #c40d44;
+}
+
+.button-cont {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Status Transfer */
+.status-transfer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.title-dashboard {
+    font-size: 1.2em;
+    padding: 12px 16px;
+}
+
+.card-status-transfer {
+    max-width: 33.333%;
+    width: 100%;
+    padding: 0 16px;
+}
+
+.item-status-transfer {
+    background-color: white;
+    box-shadow: rgba(17, 17, 26, 0.055) 0px 0px 16px;
+    margin-bottom: 24px;
+}
+
+.body-item-status-transfer {
+    padding: 12px 24px 40px 24px;
+    position: relative;
+}
+
+.title-item-status-transfer {
+    line-height: 32px;
+}
+
+.num-cont-item-status-transfer {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+.num-cont-item-status-transfer .fa-file-import {
+    font-size: 1.7em;
+    margin: 0 12px;
+    color: #04a9f5;
+}
+
+.num-cont-item-status-transfer .fa-money-bill-transfer {
+    font-size: 1.7em;
+    margin: 0 12px;
+    color: #ff004c;
+}
+
+.num-cont-item-status-transfer .fa-gift {
+    font-size: 1.7em;
+    margin: 0 12px;
+    color: #ffbb00;
+}
+
+.amount-item-cont {
+    text-align: end;
+}
+
+.amount-item {
+    font-size: 1.6em;
+    margin: 0 12px;
+}
+
+.unit-item {
+    color: #6c757d !important;
+    font-size: 1.2em;
+    font-weight: 300;
+}
+
+.color-animation {
+    width: 88%;
+    height: 8px;
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    background: linear-gradient(45deg,#ffffff, #8dd7fa, #53c6fc , #04a9f5,#ffffff, #ffffff);
+    background-size: 600% 100%;
+    animation: gradient 16s linear infinite;
+    animation-direction: alternate;
+}
+@keyframes gradient {
+    0% {background-position: 0%}
+    100% {background-position: 100%}
+}
+
+@media only screen and (max-width: 1200px) {
+    .card-status-transfer {
+        max-width: 50%;
+        width: 100%;
+        padding: 0 16px;
+    }
+
+    .last-card {
+        max-width: 100% !important;
+        width: 100%;
+        padding: 0 16px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #dashboard {
+        padding: 12px 8px;
+    }
+
+    .card-status-transfer {
+        max-width: 100%;
+        width: 100%;
+        padding: 0 16px;
+    }
+}

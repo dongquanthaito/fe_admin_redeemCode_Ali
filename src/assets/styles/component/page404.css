@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;500;600;700;800;900&display=swap');
+
+#page-404 {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Source Code Pro', monospace !important;
+    background-color: #2a323d;
+}
+
+.error-text-cont, .message-text-cont {
+    display: flex;
+}
+
+.title-404-cont {
+    margin-top: -80px;
+}
+
+.title-404-text-cont {
+    display: flex;
+    justify-content: center;
+    font-size: 10.5em;
+    font-weight: 600;
+    line-height: 300px;
+}
+
+.title-404-text {
+    color: #d09c67;
+}
+
+.symbol-text {
+    color: #dbe3f7;
+}
+
+.content-404-cont {
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+.error-text {
+    color: #7bb7ff;
+}
+
+.message-text {
+    color: #d56172;
+}
+
+.page-not-found {
+    color: #9bc476;
+}
+
+@media only screen and (max-width: 600px) {
+    .title-404-text-cont {
+        font-size: 5em;
+        line-height: 150px;
+    }
+
+    .content-404-cont {
+        font-size: 1em;
+    }
+}

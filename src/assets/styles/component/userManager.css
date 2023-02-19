@@ -1,0 +1,126 @@
+.body-user-manage {
+    width: 100%;
+    padding: 0 16px;
+    transition: 0.5s ease-in-out;
+}
+
+.register-cont, .list-user-cont {
+    margin: 0 auto;
+    background-color: white;
+    width: 100%;
+    padding: 20px 0;
+    box-shadow: rgba(17, 17, 26, 0.055) 0px 0px 16px;
+}
+
+#register-btn {
+    width: 180px !important;
+}
+
+#register-btn i {
+    margin-right: 12px;
+}
+
+.row-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggle-pass-regis {
+    color: rgb(78, 78, 78);
+    width: 30px;
+    text-align: center;
+}
+
+.toggle-pass-regis:hover {
+    cursor: pointer;
+    color: rgb(16, 93, 182);
+}
+
+.title-register-table {
+    margin-bottom: 16px;
+}
+
+.list-user-cont {
+    margin-top: 30px !important;
+}
+
+.find-list-user {
+    border-top: 1px solid #e0e0e0;
+}
+
+.row-title-find-user {
+    display: flex;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    border-bottom: 1px solid #e0e0e0;
+    padding-right: 18px;
+}
+
+.username-row, .role-row {
+    width: 30%;
+}
+
+.config-row {
+    width: 40%;
+}
+
+#body-find-user {
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.row-body-find-user {
+    display: flex;
+    padding: 10px 0;
+    justify-content: center;
+    align-items: center;
+    color: rgb(71, 71, 71);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.button-config-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.config-btn {
+    background-color: #c4effa;
+    width: 180px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+    border-radius: 10px;
+    margin: 0 12px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.config-btn:hover {
+    cursor: pointer;
+    background-color: #a8dce7;
+}
+
+.config-btn:active {
+    background-color: #89c1ce;
+}
+
+.config-btn i {
+    margin-right: 12px;
+}
+
+.remove-user {
+    background-color: #fc9eb2 !important;
+}
+
+.remove-user:hover {
+    background-color: #e28498 !important;
+}
+
+.remove-user:active {
+    background-color: #d37287 !important;
+}
