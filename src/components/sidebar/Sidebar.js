@@ -2,7 +2,7 @@
 
 import '../../assets/styles/component/sidebar.css'
 
-import logoShbet from '../../assets/images/logoSH.png'
+import logoShbet from '../../assets/images/logoSidebar.png'
 import { useEffect } from 'react'
 
 const Sidebar = () => {
@@ -30,7 +30,7 @@ const Sidebar = () => {
     return(
         <div id="sidebar" state-id='show'>
             <div className='sidebar-cont'>
-                <img className='logo-transfer-bank' src={logoShbet}></img>
+                <div className='logo-transfer-bank'>Alibaba</div>
                 <i className="fa-solid fa-arrow-right-from-bracket icon-collapse"></i>
                 <div className='header-sidebar'>
                     <i className="fa-solid fa-circle-user"></i>
@@ -58,8 +58,8 @@ const Sidebar = () => {
                     </div>
                 </div>
                 <div className='footer-sidebar'>
-                    <div className='footer-text'>SHBET Redeem Code</div>
-                    <div className='footer-text'>Version 1.0.5</div>
+                    <div className='footer-text'>Alibaba Redeem Code</div>
+                    <div className='footer-text'>Version 1.0.1</div>
                 </div>
             </div>
         </div>

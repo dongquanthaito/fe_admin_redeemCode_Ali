@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import '../../assets/styles/component/login.css'
-import bannerLogin from '../../assets/images/loginBanner.svg'
+import bannerLogin from '../../assets/images/loginBanner.png'
 import pattern from '../../assets/images/pattern.png'
 import Swal from 'sweetalert2'
 import { login } from '../../services/api.servics'
@@ -69,7 +69,7 @@ const Login = () => {
             </div>
             <div className='login-form'>
                 <div className='login-form-cont'>
-                    <p className='title-login'>SHBET - Redeem Code</p>
+                    <p className='title-login'>Alibaba - Trang quản trị code</p>
                     <p className='content-login'>Vui lòng đăng nhập để sử dụng</p>
                     <div className='input-form-login'>
                         <div className='input-login-wrapper'>

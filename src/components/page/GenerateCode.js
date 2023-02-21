@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import Header from "../../layout/Header";
 import Sidebar from "../sidebar/Sidebar";
-
+import Papa from "papaparse";
 import Swal from 'sweetalert2'
 
 import '../../assets/styles/pages.css'
-import { deleteCode, downloadUsedCode, findCode, findCodeOrigin, generateCode, updateCode } from "../../services/api.servics";
+import { deleteCode, downloadUsedCode, findCode, findCodeOrigin, generateCode, updateCode, uploadCode } from "../../services/api.servics";
 
 const GenerateCode = () => {
     let roleJs
@@ -16,13 +16,13 @@ const GenerateCode = () => {
         }
         if(localStorage.getItem('role-redeem') == 'user') {
             roleJs = 'user'
-            document.getElementsByClassName('input-form-cont')[0].style.display='none'
-            document.getElementById('edit-btn').style.display='none'
-            document.getElementById('delete-code-btn').style.display='none'
-            document.getElementsByClassName('user-manager-div')[0].style.display='none'
-            document.getElementsByClassName('row-input')[6].style.display='none'
-            document.getElementsByClassName('row-input')[7].style.display='none'
-            document.getElementsByClassName('row-input')[11].style.display='none'
+            document.getElementsByClassName('input-form-cont')[0].classList.add('display-none')
+            document.getElementById('edit-btn').classList.add('display-none')
+            document.getElementById('delete-code-btn').classList.add('display-none')
+            document.getElementsByClassName('user-manager-div')[0].classList.add('display-none')
+            document.getElementsByClassName('row-find-id')[0].classList.add('display-none')
+            document.getElementsByClassName('row-find-exp-code')[0].classList.add('display-none')
+            // document.getElementsByClassName('row-input')[11].style.display='none'
         }
         document.getElementsByClassName('user-text')[0].innerHTML = localStorage.getItem('username-redeem').toUpperCase()
         document.getElementsByClassName('transfer-machine')[0].innerHTML = "Tạo mã khuyến mãi"        
@@ -69,13 +69,14 @@ const GenerateCode = () => {
         //Download code
         document.getElementById('download-btn').addEventListener('click', () => {
             let date_code = document.getElementById('id').value
+            let promo_id = (document.getElementById('promo-id').value).toUpperCase()
             let site = document.getElementById('site').value
             let point = document.getElementById('point').value
             let list_code_length = document.getElementById('list-code-length').value
             let code_length = document.getElementById('code-length').value
             let exp_code = new Date(document.getElementById('exp-code').value  + ' 23:59:59').getTime()
             
-            if(date_code=="" || site=='default' || point=="" || list_code_length=="" || code_length=="") {
+            if(date_code=="" || promo_id=="" || site=='default' || point=="" || list_code_length=="" || code_length=="" || document.getElementById('exp-code').value=="") {
                 Swal.fire('Thao tác thất bại!', 'Vui lòng nhập đầy đủ thông tin.', 'error')
             } else {
                 if(document.getElementById('download-btn').getAttribute('click-id') == 'false') {
@@ -87,10 +88,51 @@ const GenerateCode = () => {
                             Swal.showLoading()
                         }
                     })
-                    generateCode(code_length, list_code_length, date_code, site, point, exp_code)
+                    generateCode(code_length, list_code_length, date_code, promo_id, site, point, exp_code)
                 }
             }
             
+        })
+
+        //Upload code
+        document.getElementById('upload-btn').addEventListener('click', () => {
+            Swal.fire({
+                title: 'Chọn tệp tải lên',
+                inputLabel:'Chỉ hỗ trợ tệp CSV',
+                input: 'file',
+                inputAttributes: {
+                    'accept': '.csv',
+                },
+                inputValidator: (value) => {
+                    if(!value) {
+                        return 'Vui lòng chọn tệp!'
+                    } else {
+                        Swal.fire({
+                            text: 'Đang tải lên ...',
+                            width: 250,
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        })
+                    }
+                },
+                didOpen: (target) => {
+                    target.addEventListener('change', (e) => {
+
+                        let files = e.target.files
+                        Papa.parse(files[0], {
+                            skipEmptyLines: true,
+                            header: true,
+                            complete: function(results) {
+                                console.log("Finished: ", results)
+                                uploadCode(results.data)
+                            }
+                        })
+                        
+                    })
+                }
+            })
         })
 
         //Delete Code
@@ -104,7 +146,7 @@ const GenerateCode = () => {
             if (result.isConfirmed) {
                 let promo_code = document.getElementById('find-code').value
                 let date_code = document.getElementById('find-id').value
-                let site = document.getElementById('find-site').value
+                let promo_id = document.getElementById('find-promo-id').value
                 let user_used = document.getElementById('find-user-used').value
                 let exp_code
                 if(document.getElementById('find-exp-code').value == "") {
@@ -119,7 +161,7 @@ const GenerateCode = () => {
                         Swal.showLoading()
                     }
                 })
-                deleteCode(promo_code, date_code, site, user_used, exp_code)
+                deleteCode(promo_code, date_code, promo_id, user_used, exp_code)
             }
             })
         })
@@ -129,7 +171,7 @@ const GenerateCode = () => {
 
             let promo_code = document.getElementById('find-code').value
             let date_code = document.getElementById('find-id').value
-            let site = document.getElementById('find-site').value
+            let promo_id = document.getElementById('promo-id').value
             let user_used = document.getElementById('find-user-used').value
             let ip = document.getElementById('find-ip').value
             let exp_code
@@ -152,7 +194,7 @@ const GenerateCode = () => {
                             Swal.showLoading()
                         }
                     })
-                    findCode(promo_code, date_code, site, user_used, ip, exp_code)
+                    findCode(promo_code, date_code, promo_id, user_used, ip, exp_code)
                 }
             } else {
                 Swal.fire({
@@ -163,7 +205,7 @@ const GenerateCode = () => {
                     }
                 })
     
-                findCode(promo_code, date_code, site, user_used, ip, exp_code)
+                findCode(promo_code, date_code, promo_id, user_used, ip, exp_code)
             }
             
 
@@ -173,7 +215,7 @@ const GenerateCode = () => {
         document.getElementById('unchecked-btn').addEventListener('click', () => {
             document.getElementById('find-code').value = ""
             document.getElementById('find-id').value = ""
-            document.getElementById('find-site').value = "default"
+            document.getElementById('find-promo-id').value = ""
             document.getElementById('find-user-used').value = ""
             document.getElementById('find-ip').value = ""
             document.getElementById('find-exp-code').value = 'dd/mm/yyyy'
@@ -352,10 +394,14 @@ const GenerateCode = () => {
                             <input id="id" type='text' placeholder="Mã phát hành"></input>
                         </div>
                         <div className="row-input">
+                            <input id="promo-id" type='text' placeholder="Mã khuyến mãi"></input>
+                        </div>
+                        <div className="row-input">
                             <select id="site">
                                 <option value='default'>- Trang -</option>
-                                <option value='shbet'>SHBET</option>
-                                <option value='new88'>NEW88</option>
+                                <option value='jun88'>Jun88</option>
+                                <option value='f8bet'>F8BET</option>
+                                <option value='hi88'>Hi88</option>
                             </select>
                         </div>
                         <div className="row-input">
@@ -374,7 +420,11 @@ const GenerateCode = () => {
                     <div className="download-btn-cont">
                         <button id="download-btn" click-id='false'>
                             <i className="fa-solid fa-download"></i>
-                            Tải code
+                            Tạo và tải code
+                        </button>
+                        <button id="upload-btn" click-id='false'>
+                            <i className="fa-solid fa-upload"></i>
+                            Upload code
                         </button>
                     </div>
                 </div>
@@ -385,26 +435,30 @@ const GenerateCode = () => {
                     </div>
                     <div className="body-find-code-table">
                         <div className="input-form-wrapper">
-                            <div className="row-input">
+                            <div className="row-input row-find-id">
                                 <input id="find-id" type='text' placeholder="Mã phát hành"></input>
                             </div>
-                            <div className="row-input">
+                            <div className="row-input row-find-promo-id">
+                                <input id="find-promo-id" type='text' placeholder="Mã khuyến mãi"></input>
+                            </div>
+                            {/* <div className="row-input">
                                 <select id="find-site">
                                     <option value='default'>- Trang -</option>
-                                    <option value='shbet'>SHBET</option>
-                                    <option value='new88'>NEW88</option>
+                                    <option value='jun88'>Jun88</option>
+                                    <option value='f8bet'>F8BET</option>
+                                    <option value='hi88'>Hi88</option>
                                 </select>
+                            </div> */}
+                            <div className="row-input row-find-code">
+                                <input id="find-code" type='text' placeholder="Mã code"></input>
                             </div>
-                            <div className="row-input">
-                                <input id="find-code" type='text' placeholder="Mã khuyến mãi"></input>
-                            </div>
-                            <div className="row-input">
+                            <div className="row-input row-find-user-used">
                                 <input id="find-user-used" type='text' placeholder="Player ID"></input>
                             </div>
-                            <div className="row-input">
+                            <div className="row-input row-find-ip">
                                 <input id="find-ip" type='text' placeholder="Địa chỉ IP"></input>
                             </div>
-                            <div className="row-input">
+                            <div className="row-input row-find-exp-code">
                                 <input id="find-exp-code" type='date' placeholder="Hạn sử dụng" title="Hạn sử dụng code"></input>
                             </div>
                             <div className="button-cont">
@@ -434,7 +488,7 @@ const GenerateCode = () => {
                     <div className="item-find-cont">
                         <div className="row-title-find">
                             <div className="td-item-title-find item-id">ID</div>
-                            <div className="td-item-title-find item-site">Trang</div>
+                            <div className="td-item-title-find item-promo-id">Mã khuyến mãi</div>
                             <div className="td-item-title-find item-code">Code</div>
                             <div className="td-item-title-find item-point">Điểm thưởng</div>
                             <div className="td-item-title-find item-user-used">Người sử dụng</div>

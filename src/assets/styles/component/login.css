@@ -1,6 +1,7 @@
 #login {
     display: flex;
     width: 100%;
+    background-color: #45a8f5;
 }
 
 .banner-login {

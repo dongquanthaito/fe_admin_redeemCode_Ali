@@ -48,10 +48,14 @@
 }
 
 .logo-transfer-bank {
+    color: rgb(245, 176, 49);
     width: 60%;
     padding-left: 26px;
     padding-top: 16px;
     padding-bottom: 16px;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
 .header-sidebar {

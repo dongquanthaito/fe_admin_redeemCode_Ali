@@ -17,7 +17,7 @@ export const registerAcc = (username, password, role) => {
     redirect: 'follow'
     };
 
-    return fetch("http://localhost:5000/account/register", requestOptions)
+    return fetch("https://api.f8bet.club/account/register", requestOptions)
     .then(response => response.json())
     .then(result => {return result})
     .catch(error => console.log('error', error));
@@ -34,7 +34,7 @@ export const getAcc = () => {
       redirect: 'follow'
     };
     
-    return fetch("http://localhost:5000/account", requestOptions)
+    return fetch("https://api.f8bet.club/account", requestOptions)
       .then(response => response.json())
       .then(result => {return result})
       .catch(error => console.log('error', error));
@@ -59,7 +59,7 @@ export const updatePassAcc = (username, password) => {
     redirect: 'follow'
   };
 
-  return fetch("http://localhost:5000/account", requestOptions)
+  return fetch("https://api.f8bet.club/account", requestOptions)
     .then(response => response.json())
     .then(result => {return result})
     .catch(error => console.log('error', error));
@@ -84,7 +84,7 @@ export const updateRoleAcc = (username, role) => {
     redirect: 'follow'
   };
 
-  return fetch("http://localhost:5000/account", requestOptions)
+  return fetch("https://api.f8bet.club/account", requestOptions)
     .then(response => response.json())
     .then(result => {return result})
     .catch(error => console.log('error', error));
@@ -101,7 +101,7 @@ export const removeAcc = (username) => {
     redirect: 'follow'
   };
   
-  return fetch("http://localhost:5000/account?username=" + username, requestOptions)
+  return fetch("https://api.f8bet.club/account?username=" + username, requestOptions)
     .then(response => response.json())
     .then(result => {return result})
     .catch(error => console.log('error', error));

@@ -12,7 +12,7 @@ export const checkAuth = () => {
     redirect: 'follow'
   };
   
-  fetch("http://localhost:5000/checkAuth", requestOptions)
+  fetch("https://api.f8bet.club/checkAuth", requestOptions)
     .then(response => response.json())
     .then(result => {
       if(result.statusCode == 403) {
@@ -44,7 +44,7 @@ export const login = (username, password) => {
       redirect: 'follow'
     };
     
-    fetch("http://localhost:5000/account/login", requestOptions)
+    fetch("https://api.f8bet.club/account/login", requestOptions)
       .then(response => response.json())
       .then(result => {
         console.log(result)
@@ -64,7 +64,7 @@ export const login = (username, password) => {
       });
 }
 
-export const generateCode = (code_length, list_code_length, date_code, site, point, exp_code) => {
+export const generateCode = (code_length, list_code_length, date_code, promo_id, site, point, exp_code) => {
   let myHeaders = new Headers();
   
   myHeaders.append("Authorization", localStorage.getItem('token-redeem'));
@@ -75,17 +75,18 @@ export const generateCode = (code_length, list_code_length, date_code, site, poi
     redirect: 'follow'
   };
   
-  fetch("http://localhost:5000/generate-code?code_length="+code_length+"&list_code_length="+list_code_length+"&date_code="+date_code+"&site="+site+"&point="+point+"&exp_code="+exp_code+"&user_used=non&used_time=non&ip=non&fp=non", requestOptions)
+  fetch("https://api.f8bet.club/generate-code?code_length="+code_length+"&list_code_length="+list_code_length+"&date_code="+date_code+"&promo_id="+promo_id+"&site="+site+"&point="+point+"&exp_code="+exp_code+"&user_used=non&used_time=non&ip=non&fp=non", requestOptions)
     .then(response => response.json())
     .then(result => {
       document.getElementById('download-btn').setAttribute('click-id', 'false')
       console.log(result)
       let data = [
         {
-          sheet: "ATT-Bank Transfer",
+          sheet: site + "_code_sheet",
           columns: [
             { label: "ID", value: "id" },
             { label: "Trang", value: "site"},
+            { label: "Mã khuyến mãi", value: "promo_id"},
             { label: "Điểm thưởng", value: "point"},
             { label: "Code", value: "code"},
             { label: "Hạn sử dụng", value: "exp_code"}
@@ -100,11 +101,18 @@ export const generateCode = (code_length, list_code_length, date_code, site, poi
         let exp_year = new Date(el.exp_code*1).getFullYear()
         let exp_time = exp_date + "/" + exp_month + "/" + exp_year
 
-        data[0].content.push({id: el.date_code, site: el.site, point: el.point, code: el.promo_code, exp_code: exp_time})
+        data[0].content.push({
+          id: el.date_code,
+          site: el.site,
+          promo_id: el.promo_id,
+          point: el.point,
+          code: el.promo_code,
+          exp_code: exp_time
+        })
       })
 
       let settings = {
-        fileName: site + "_Code_Sheet",
+        fileName: site + "_Alibaba_code",
       }
       xlsx(data, settings)
       
@@ -133,69 +141,75 @@ export const generateCode = (code_length, list_code_length, date_code, site, poi
 
 export const downloadUsedCode = async() => {
   let itemResult = await findCodeOrigin()
-  let data = [
-    {
-      sheet: "SHBET Used_Code",
-      columns: [
-        { label: "ID", value: "id" },
-        { label: "Trang", value: "site"},
-        { label: "Điểm thưởng", value: "point"},
-        { label: "Code", value: "code"},
-        { label: "Người sử dụng", value: "user_used"},
-        { label: "Địa chỉ IP", value: "ip"},
-        { label: "Mã Fingerprint", value: "fp"},
-        { label: "Hạn sử dụng", value: "exp_code"}
-      ],
-      content: [],
+  if(itemResult.valid == false) {
+    Swal.fire('Thao tác thất bại!', 'Không tìm thấy dữ liệu', 'error')
+  } else {
+    let data = [
+      {
+        sheet: "SHBET Used_Code",
+        columns: [
+          { label: "ID", value: "id" },
+          { label: "Trang", value: "site"},
+          { label: "Mã khuyến mãi", value: "promo_id"},
+          { label: "Điểm thưởng", value: "point"},
+          { label: "Code", value: "code"},
+          { label: "Người sử dụng", value: "user_used"},
+          { label: "Địa chỉ IP", value: "ip"},
+          { label: "Mã Fingerprint", value: "fp"},
+          { label: "Hạn sử dụng", value: "exp_code"}
+        ],
+        content: [],
+      }
+    ]
+  
+    itemResult.detail.forEach((el) => {
+      let exp_date = ("0" + new Date(el.exp_code*1).getDate()).slice(-2)
+      let exp_month = ("0" + (new Date(el.exp_code*1).getMonth() +1)).slice(-2)
+      let exp_year = new Date(el.exp_code*1).getFullYear()
+      let exp_time = exp_date + "/" + exp_month + "/" + exp_year
+      if(el.user_used != 'non') {
+        data[0].content.push({
+          id: el.date_code,
+          site: el.site,
+          promo_id: el.promo_id,
+          point: el.point,
+          code: el.promo_code,
+          user_used: el.user_used,
+          ip: el.ip,
+          fp: el.fp,
+          exp_code: exp_time
+        })
+      }
+    })
+  
+    let settings = {
+      fileName: "Used_Code_Sheet",
     }
-  ]
-
-  itemResult.detail.forEach((el) => {
-    let exp_date = ("0" + new Date(el.exp_code*1).getDate()).slice(-2)
-    let exp_month = ("0" + (new Date(el.exp_code*1).getMonth() +1)).slice(-2)
-    let exp_year = new Date(el.exp_code*1).getFullYear()
-    let exp_time = exp_date + "/" + exp_month + "/" + exp_year
-    if(el.user_used != 'non') {
-      data[0].content.push({
-        id: el.date_code,
-        site: el.site,
-        point: el.point,
-        code: el.promo_code,
-        user_used: el.user_used,
-        ip: el.ip,
-        fp: el.fp,
-        exp_code: exp_time
-      })
-    }
-  })
-
-  let settings = {
-    fileName: "Used_Code_Sheet",
+    xlsx(data, settings)
+  
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+    })
+    Toast.fire({
+      icon: 'success',
+      title: "Tải thành công !"
+    })
   }
-  xlsx(data, settings)
-
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 5000,
-    timerProgressBar: true,
-  })
-  Toast.fire({
-    icon: 'success',
-    title: "Tải thành công !"
-  })
 }
 
-export const deleteCode = (promo_code, date_code, site, user_used, exp_code) => {
+export const deleteCode = (promo_code, date_code, promo_id, user_used, exp_code) => {
   if(promo_code != "") {
     promo_code = "promo_code="+promo_code
   }
   if(date_code != "") {
     date_code = "date_code="+date_code
   }
-  if(site != "default") {
-    site = "site="+site
+  if(promo_id != "") {
+    promo_id = "promo_id="+promo_id
   }
   if(user_used != "") {
     user_used = "user_used="+user_used
@@ -208,7 +222,7 @@ export const deleteCode = (promo_code, date_code, site, user_used, exp_code) => 
     return arr.filter(Boolean);
   }
   
-  let newArray = bouncer([promo_code, date_code, site, user_used, exp_code]);
+  let newArray = bouncer([promo_code, date_code, promo_id, user_used, exp_code]);
 
   function removeItemAll(arr, value) {
     let i = 0;
@@ -230,7 +244,7 @@ export const deleteCode = (promo_code, date_code, site, user_used, exp_code) => 
     }
   }
   
-  let endPoint = "http://localhost:5000/code"
+  let endPoint = "https://api.f8bet.club/code"
   findCodeArray.forEach((el) => {
     endPoint = endPoint + el
   })
@@ -253,6 +267,7 @@ export const deleteCode = (promo_code, date_code, site, user_used, exp_code) => 
     console.log(result)
     if(result.deletedCount > 0) {
       Swal.fire('Thành công!', "Xóa thành công " + result.deletedCount +" mục dữ liệu", 'success')
+      .then(() => {window.location.reload()})
     } else {
       Swal.fire('Thao tác thất bại!', 'Không tìm thấy dữ liệu', 'error')
     }
@@ -264,15 +279,15 @@ export const deleteCode = (promo_code, date_code, site, user_used, exp_code) => 
   
 }
 
-export const findCode = (promo_code, date_code, site, user_used, ip, exp_code) => {
+export const findCode = (promo_code, date_code, promo_id, user_used, ip, exp_code) => {
   if(promo_code != "") {
     promo_code = "promo_code="+promo_code
   }
   if(date_code != "") {
     date_code = "date_code="+date_code
   }
-  if(site != "default") {
-    site = "site="+site
+  if(promo_id != "") {
+    promo_id = "promo_id="+promo_id
   }
   if(user_used != "") {
     user_used = "user_used="+user_used
@@ -288,7 +303,7 @@ export const findCode = (promo_code, date_code, site, user_used, ip, exp_code) =
     return arr.filter(Boolean);
   }
   
-  let newArray = bouncer([promo_code, date_code, site, user_used, ip, exp_code]);
+  let newArray = bouncer([promo_code, date_code, promo_id, user_used, ip, exp_code]);
 
   function removeItemAll(arr, value) {
     let i = 0;
@@ -310,7 +325,7 @@ export const findCode = (promo_code, date_code, site, user_used, ip, exp_code) =
     }
   }
   
-  let endPoint = "http://localhost:5000/code"
+  let endPoint = "https://api.f8bet.club/code"
   findCodeArray.forEach((el) => {
     endPoint = endPoint + el
   })
@@ -355,10 +370,10 @@ export const findCode = (promo_code, date_code, site, user_used, ip, exp_code) =
         itemId.innerHTML = el.date_code
         rowItemFind.appendChild(itemId)
 
-        let itemSite = document.createElement('div')
-        itemSite.setAttribute('class', 'td-item-find item-site')
-        itemSite.innerHTML = el.site
-        rowItemFind.appendChild(itemSite)
+        let itemPromoID = document.createElement('div')
+        itemPromoID.setAttribute('class', 'td-item-find item-promo-id')
+        itemPromoID.innerHTML = el.promo_id
+        rowItemFind.appendChild(itemPromoID)
 
         let itemCode = document.createElement('div')
         itemCode.setAttribute('class', 'td-item-find item-code')
@@ -386,7 +401,7 @@ export const findCode = (promo_code, date_code, site, user_used, ip, exp_code) =
 
         let usedTime = document.createElement('div')
         usedTime.setAttribute('class', 'td-item-find item-used-time')
-        if(el.used_time == 'non' || el.used_time == undefined) {
+        if(el.used_time == 0) {
           usedTime.innerHTML = '-'
         } else {
           usedTime.innerHTML = used_time
@@ -466,7 +481,7 @@ export const updateCode = (id, value, typeID, typeValue) => {
         redirect: 'follow'
       };
       
-      fetch("http://localhost:5000/code", requestOptions)
+      fetch("https://api.f8bet.club/code", requestOptions)
         .then(response => response.json())
         .then(result => {
           console.log(result)
@@ -494,7 +509,7 @@ export const updateCode = (id, value, typeID, typeValue) => {
         redirect: 'follow'
       };
       
-      fetch("http://localhost:5000/code", requestOptions)
+      fetch("https://api.f8bet.club/code", requestOptions)
         .then(response => response.json())
         .then(result => {
           console.log(result)
@@ -524,7 +539,7 @@ export const updateCode = (id, value, typeID, typeValue) => {
       redirect: 'follow'
     };
     
-    fetch("http://localhost:5000/code", requestOptions)
+    fetch("https://api.f8bet.club/code", requestOptions)
       .then(response => response.json())
       .then(result => {
         console.log(result)
@@ -552,8 +567,33 @@ export const findCodeOrigin = () => {
     redirect: 'follow'
   };
   
-  return fetch("http://localhost:5000/code", requestOptions)
+  return fetch("https://api.f8bet.club/code", requestOptions)
     .then(response => response.json())
     .then(result => {return result})
     .catch(error => console.log('error', error));
+}
+
+export const uploadCode = (data) => {
+  let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  
+  let raw = JSON.stringify(data);
+  
+  let requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+  
+  fetch("https://api.f8bet.club/code", requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result)
+    Swal.fire({
+      icon: 'success',
+      title: 'Upload data thành công !',
+    })
+  })
+  .catch(error => console.log('error', error));  
 }
